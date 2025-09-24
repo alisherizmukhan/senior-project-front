@@ -3,6 +3,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import LandingPage from "./pages/LandingPage";
 import { testSupabaseConnection } from "./supabaseClient";
+import "./styles/Global.css";
 
 import { useEffect } from "react";
 
