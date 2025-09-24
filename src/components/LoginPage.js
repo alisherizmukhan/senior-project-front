@@ -1,224 +1,177 @@
-import React, { useState } from 'react';
-import './LoginPage.css';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Box, Button, TextField, Typography, Alert, CircularProgress, Link, Container, Paper, Chip } from '@mui/material';
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
+import { login, healthCheck } from '../api/auth';
+import { useAuth } from '../contexts/AuthContext';
 
-const LoginPage = ({ onNavigate }) => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
-  const [errors, setErrors] = useState({});
+const LoginPage = () => {
+  const [apiError, setApiError] = useState('');
+  const [apiSuccess, setApiSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+  const [apiStatus, setApiStatus] = useState('checking'); // 'checking', 'online', 'offline'
+  const navigate = useNavigate();
+  const { login: loginUser } = useAuth();
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: ''
-      }));
-    }
-  };
+  // Check API health on component mount
+  useEffect(() => {
+    const checkApiHealth = async () => {
+      const { data, error } = await healthCheck();
+      if (data) {
+        setApiStatus('online');
+      } else {
+        setApiStatus('offline');
+        console.error('API Health Check Failed:', error);
+      }
+    };
+    checkApiHealth();
+  }, []);
 
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!formData.email) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
-    }
-
-    if (!formData.password) {
-      newErrors.password = 'Password is required';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
-
-    setLoading(true);
-    
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // For demo purposes, accept any valid email/password
-      console.log('Login attempt:', formData);
-      
-      // Here you would typically make an API call to authenticate
-      // For now, we'll just simulate a successful login
-      alert('Login successful! (Demo)');
-      
-    } catch (error) {
-      setErrors({ submit: 'Login failed. Please try again.' });
-    } finally {
-      setLoading(false);
-    }
-  };
+  const validationSchema = Yup.object({
+    email: Yup.string()
+      .email('Invalid email address')
+      .matches(/^[^@\s]+@nu\.edu\.kz$/, 'Must be a valid NU email address (@nu.edu.kz)')
+      .required('Email is required'),
+    password: Yup.string()
+      .required('Password is required'),
+  });
 
   return (
-    <div className="login-container">
-      {/* Background Elements */}
-      <div className="login-background">
-        <div className="bg-gradient"></div>
-        <div className="bg-pattern">
-          <div className="pattern-dot"></div>
-          <div className="pattern-dot"></div>
-          <div className="pattern-dot"></div>
-          <div className="pattern-dot"></div>
-          <div className="pattern-dot"></div>
-        </div>
-      </div>
-
-      {/* Header */}
-      <header className="login-header">
-        <div className="header-content">
-          <button 
-            className="back-btn"
-            onClick={() => onNavigate('home')}
-          >
-            <span className="back-icon">←</span>
-            Back to Home
-          </button>
-          <div className="logo">
-            <span className="logo-icon">🧠</span>
-            <span className="logo-text">Smart Academic Planner</span>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="login-main">
-        <div className="login-content">
-          <div className="login-card">
-            <div className="card-header">
-              <div className="login-icon">
-                <span>👋</span>
-              </div>
-              <h1 className="login-title">Welcome Back!</h1>
-              <p className="login-subtitle">
-                Sign in to your account to continue your academic journey
-              </p>
-            </div>
-
-            <form onSubmit={handleSubmit} className="login-form">
-              <div className="form-group">
-                <label htmlFor="email" className="form-label">
-                  Email Address
-                </label>
-                <div className="input-wrapper">
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className={`form-input ${errors.email ? 'error' : ''}`}
-                    placeholder="Enter your email address"
-                  />
-                  <span className="input-icon">📧</span>
-                </div>
-                {errors.email && <span className="error-message">{errors.email}</span>}
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="password" className="form-label">
-                  Password
-                </label>
-                <div className="input-wrapper">
-                  <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleInputChange}
-                    className={`form-input ${errors.password ? 'error' : ''}`}
-                    placeholder="Enter your password"
-                  />
-                  <span className="input-icon">🔒</span>
-                </div>
-                {errors.password && <span className="error-message">{errors.password}</span>}
-              </div>
-
-              <div className="form-options">
-                <label className="checkbox-wrapper">
-                  <input type="checkbox" className="checkbox" />
-                  <span className="checkbox-label">Remember me</span>
-                </label>
-                <button type="button" className="forgot-password">
-                  Forgot Password?
-                </button>
-              </div>
-
-              {errors.submit && (
-                <div className="submit-error">
-                  {errors.submit}
-                </div>
-              )}
-
-              <button 
-                type="submit" 
-                className={`submit-btn ${loading ? 'loading' : ''}`}
-                disabled={loading}
-              >
-                {loading ? (
-                  <>
-                    <span className="loading-spinner"></span>
-                    Signing In...
-                  </>
-                ) : (
-                  <>
-                    <span className="btn-icon">🚀</span>
-                    Sign In
-                  </>
+    <Container maxWidth="sm" sx={{ mt: 8 }}>
+      <Paper elevation={3} sx={{ p: 4 }}>
+        <Typography variant="h4" align="center" gutterBottom>
+          NU Student Login
+        </Typography>
+        <Typography variant="body2" align="center" color="text.secondary" gutterBottom>
+          Sign in with your @nu.edu.kz email address.
+        </Typography>
+        
+        {/* API Status Indicator */}
+        <Box display="flex" justifyContent="center" mb={2}>
+          <Chip 
+            label={
+              apiStatus === 'checking' ? 'Connecting to server...' :
+              apiStatus === 'online' ? 'Server Online' : 'Server Offline - Registration may fail'
+            }
+            color={
+              apiStatus === 'checking' ? 'default' :
+              apiStatus === 'online' ? 'success' : 'error'
+            }
+            size="small"
+          />
+        </Box>
+        <Formik
+          initialValues={{ email: '', password: '' }}
+          validationSchema={validationSchema}
+          onSubmit={async (values, { setSubmitting, resetForm }) => {
+            setApiError('');
+            setApiSuccess('');
+            setLoading(true);
+            
+            try {
+              const { data, error } = await login(values.email, values.password);
+              
+              if (data) {
+                setApiSuccess('Login successful! Redirecting to dashboard...');
+                
+                // Use auth context to log user in
+                loginUser(data.user, data.token);
+                
+                // Navigate to dashboard after a short delay
+                setTimeout(() => {
+                  navigate('/dashboard');
+                }, 1000);
+              } else {
+                setApiError(error || 'Login failed');
+              }
+            } catch (error) {
+              console.error('Login error:', error);
+              
+              // Handle different error types
+              if (error.response?.status === 405) {
+                setApiError('Login endpoint not implemented yet on the backend. The registration is working, but login functionality is still being developed.');
+              } else if (error.response?.status === 401) {
+                setApiError('Invalid email or password');
+              } else if (error.response) {
+                setApiError(error.response.data?.message || 'Login failed');
+              } else if (error.request) {
+                setApiError('Unable to connect to server. Please check your connection and CORS configuration.');
+              } else {
+                setApiError('An unexpected error occurred. Please try again.');
+              }
+            } finally {
+              setLoading(false);
+              setSubmitting(false);
+            }
+          }}
+        >
+          {({ values, errors, touched, handleChange, handleBlur, isSubmitting }) => (
+            <Form>
+              <Box display="flex" flexDirection="column" gap={2}>
+                <TextField
+                  label="NU Email"
+                  name="email"
+                  value={values.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={touched.email && Boolean(errors.email)}
+                  helperText={touched.email && errors.email}
+                  placeholder="yourname@nu.edu.kz"
+                  required
+                />
+                <TextField
+                  label="Password"
+                  name="password"
+                  type="password"
+                  value={values.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={touched.password && Boolean(errors.password)}
+                  helperText={touched.password && errors.password}
+                  required
+                />
+                {apiError && (
+                  <Alert severity="error">
+                    <Typography variant="body2">{apiError}</Typography>
+                    {apiError.includes('CORS') && (
+                      <Typography variant="caption" display="block" sx={{ mt: 1 }}>
+                        <strong>Technical Note:</strong> This is a CORS (Cross-Origin Resource Sharing) issue. 
+                        The backend server needs to allow requests from this frontend domain.
+                      </Typography>
+                    )}
+                  </Alert>
                 )}
-              </button>
-            </form>
-
-            <div className="login-divider">
-              <span>or continue with</span>
-            </div>
-
-            <div className="social-login">
-              <button className="social-btn google-btn">
-                <span className="social-icon">🅶</span>
-                Google
-              </button>
-              <button className="social-btn microsoft-btn">
-                <span className="social-icon">Ⓜ️</span>
-                Microsoft
-              </button>
-            </div>
-
-            <div className="login-footer">
-              <p>
-                Don't have an account?{' '}
-                <button 
-                  className="link-btn"
-                  onClick={() => onNavigate('register')}
+                {apiSuccess && <Alert severity="success">{apiSuccess}</Alert>}
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  disabled={isSubmitting || loading}
+                  fullWidth
+                  sx={{ py: 1.5 }}
+                  size="large"
                 >
-                  Sign up here
-                </button>
-              </p>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
+                  {loading ? <CircularProgress size={24} /> : 'Sign In'}
+                </Button>
+                <Typography align="center" variant="body2">
+                  Don't have an account?{' '}
+                  <Link 
+                    component="button" 
+                    type="button"
+                    onClick={() => navigate('/register')} 
+                    underline="hover"
+                    variant="body2"
+                  >
+                    Sign up here
+                  </Link>
+                </Typography>
+              </Box>
+            </Form>
+          )}
+        </Formik>
+      </Paper>
+    </Container>
   );
 };
 

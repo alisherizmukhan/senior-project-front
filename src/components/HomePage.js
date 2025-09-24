@@ -1,7 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './HomePage.css';
 
-const HomePage = ({ onNavigate }) => {
+const HomePage = () => {
+  const navigate = useNavigate();
   return (
     <div className="home-container">
       {/* Background Elements */}
@@ -26,19 +28,19 @@ const HomePage = ({ onNavigate }) => {
           <nav className="nav-menu">
             <button 
               className="nav-btn"
-              onClick={() => onNavigate('home')}
+              onClick={() => navigate('/')}
             >
               Home
             </button>
             <button 
               className="nav-btn"
-              onClick={() => onNavigate('login')}
+              onClick={() => navigate('/login')}
             >
               Login
             </button>
             <button 
               className="nav-btn nav-btn-primary"
-              onClick={() => onNavigate('register')}
+              onClick={() => navigate('/register')}
             >
               Get Started
             </button>
@@ -61,7 +63,7 @@ const HomePage = ({ onNavigate }) => {
           <div className="hero-buttons">
             <button 
               className="cta-button cta-primary"
-              onClick={() => onNavigate('register')}
+              onClick={() => navigate('/register')}
             >
               <span className="button-icon">🚀</span>
               Start Planning Now
@@ -199,7 +201,7 @@ const HomePage = ({ onNavigate }) => {
           </p>
           <button 
             className="cta-button cta-primary large"
-            onClick={() => onNavigate('register')}
+            onClick={() => navigate('/register')}
           >
             <span className="button-icon">✨</span>
             Get Started for Free
