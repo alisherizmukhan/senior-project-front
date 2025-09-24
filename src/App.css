@@ -1,156 +1,38 @@
-/* Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+.App {
+  text-align: center;
 }
 
-body {
-  font-family: system-ui, -apple-system, sans-serif;
-  background-color: #f9fafb; /* light gray background */
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
   min-height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Root container */
-#root {
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Auth card (center box) */
-.auth-card {
-  width: 100%;
-  max-width: 400px;   /* <== this makes it small */
-  background: white;
-  border-radius: 0.75rem;
-  padding: 2rem;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-  border: 1px solid #e5e7eb;
-  text-align: center;
-  display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-}
-
-/* Headings */
-.auth-card h1 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: #111827;
-}
-
-.auth-card p {
-  color: #6b7280;
-  font-size: 0.9rem;
-  margin-bottom: 1.5rem;
-}
-
-/* Inputs stay inside card */
-.auth-card input {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1.5px solid #d1d5db;
-  border-radius: 0.75rem;
-  font-size: 1rem;
-  margin-bottom: 1.25rem;
-  background-color: #f3f4f6; /* slightly darker for contrast */
-  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-}
-
-.auth-card input:focus {
-  border-color: #2563eb;
-  outline: none;
-  background-color: #fff;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15), 0 2px 8px rgba(0,0,0,0.06);
-}
-
-/* Button */
-.auth-card button {
-  width: 100%;
-  padding: 0.75rem;
-  background: #2563eb;
-  color: white;
-  font-weight: 600;
-  border-radius: 0.5rem;
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.auth-card button:hover {
-  background: #1e40af;
-}
-
-/* Register card (if needed, to match login) */
-.register-card {
-  /* Use the same styles as .auth-card */
-  width: 100%;
-  max-width: 400px;
-  background: white;
-  border-radius: 0.75rem;
-  padding: 2rem;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-  border: 1px solid #e5e7eb;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: center;
-}
-
-.register-card h1 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: #111827;
-}
-
-.register-card p {
-  color: #6b7280;
-  font-size: 0.9rem;
-  margin-bottom: 1.5rem;
-}
-
-.register-card input {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1.5px solid #d1d5db;
-  border-radius: 0.75rem;
-  font-size: 1rem;
-  margin-bottom: 1.25rem; /* ensures spacing between fields */
-  background-color: #f3f4f6;
-  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-}
-
-.register-card input:focus {
-  border-color: #2563eb;
-  outline: none;
-  background-color: #fff;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15), 0 2px 8px rgba(0,0,0,0.06);
-}
-
-.register-card button {
-  width: 100%;
-  padding: 0.75rem;
-  background: #2563eb;
+  font-size: calc(10px + 2vmin);
   color: white;
-  font-weight: 600;
-  border-radius: 0.5rem;
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s ease;
 }
 
-.register-card button:hover {
-  background: #1e40af;
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
