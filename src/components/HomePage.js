@@ -1,252 +1,357 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+  Box,
+  Container,
+  Typography,
+  Button,
+  Stack,
+  Fade
+} from '@mui/material';
+import {
+  School,
+  ArrowForward
+} from '@mui/icons-material';
 import './HomePage.css';
 
 const HomePage = () => {
   const navigate = useNavigate();
-  return (
-    <div className="home-container">
-      {/* Background Elements */}
-      <div className="home-background">
-        <div className="bg-gradient"></div>
-        <div className="floating-elements">
-          <div className="floating-icon icon-1">📚</div>
-          <div className="floating-icon icon-2">📊</div>
-          <div className="floating-icon icon-3">🎯</div>
-          <div className="floating-icon icon-4">⏰</div>
-          <div className="floating-icon icon-5">✨</div>
-        </div>
-      </div>
+  const [mounted, setMounted] = useState(false);
 
-      {/* Header Navigation */}
-      <header className="home-header">
-        <div className="header-content">
-          <div className="logo">
-            <span className="logo-icon">🧠</span>
-            <span className="logo-text">Smart Academic Planner</span>
-          </div>
-          <nav className="nav-menu">
-            <button 
-              className="nav-btn"
-              onClick={() => navigate('/')}
-            >
-              Home
-            </button>
-            <button 
-              className="nav-btn"
-              onClick={() => navigate('/login')}
-            >
-              Login
-            </button>
-            <button 
-              className="nav-btn nav-btn-primary"
-              onClick={() => navigate('/register')}
-            >
-              Get Started
-            </button>
-          </nav>
-        </div>
-      </header>
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  return (
+    <Box className="homepage">
+      {/* Navigation */}
+      <Box 
+        component="nav"
+        className="navbar"
+        sx={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
+          background: 'rgba(255, 255, 255, 0.95)',
+          backdropFilter: 'blur(20px)',
+          borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
+        }}
+      >
+        <Container maxWidth="lg">
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            py={2}
+          >
+            {/* Logo */}
+            <Box display="flex" alignItems="center" gap={1.5}>
+              <School sx={{ color: '#6366f1', fontSize: 28 }} />
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 700,
+                  color: '#1f2937',
+                  letterSpacing: '-0.025em',
+                  fontSize: '1.25rem'
+                }}
+              >
+                NU Academic
+              </Typography>
+            </Box>
+
+            {/* Navigation Links */}
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Button
+                color="inherit"
+                sx={{
+                  color: '#6b7280',
+                  fontWeight: 500,
+                  textTransform: 'none',
+                  px: 2,
+                  borderRadius: '8px',
+                  '&:hover': {
+                    background: 'rgba(99, 102, 241, 0.08)'
+                  }
+                }}
+                onClick={() => navigate('/login')}
+              >
+                Sign In
+              </Button>
+              <Button
+                variant="contained"
+                endIcon={<ArrowForward sx={{ fontSize: 18 }} />}
+                sx={{
+                  background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+                  borderRadius: '12px',
+                  px: 3,
+                  py: 1.2,
+                  fontWeight: 600,
+                  textTransform: 'none',
+                  boxShadow: '0 4px 20px rgba(99, 102, 241, 0.25)',
+                  '&:hover': {
+                    boxShadow: '0 8px 30px rgba(99, 102, 241, 0.35)',
+                    transform: 'translateY(-1px)'
+                  }
+                }}
+                onClick={() => navigate('/register')}
+              >
+                Get Started
+              </Button>
+            </Stack>
+          </Box>
+        </Container>
+      </Box>
 
       {/* Hero Section */}
-      <section className="hero-section">
-        <div className="hero-content">
-          <h1 className="hero-title">
-            Smart Academic Planning
-            <span className="gradient-text"> with AI Insights</span>
-          </h1>
-          <p className="hero-subtitle">
-            Transform your university experience with intelligent syllabus parsing, 
-            automated GPA tracking, and AI-powered academic insights. Never miss a 
-            deadline or lose track of your goals again.
-          </p>
-          <div className="hero-buttons">
-            <button 
-              className="cta-button cta-primary"
-              onClick={() => navigate('/register')}
-            >
-              <span className="button-icon">🚀</span>
-              Start Planning Now
-            </button>
-            <button className="cta-button cta-secondary">
-              <span className="button-icon">▶️</span>
-              Watch Demo
-            </button>
-          </div>
-        </div>
-        <div className="hero-visual">
-          <div className="dashboard-mockup">
-            <div className="mockup-header">
-              <div className="mockup-tabs">
-                <div className="tab active">Dashboard</div>
-                <div className="tab">Calendar</div>
-                <div className="tab">GPA Tracker</div>
-              </div>
-            </div>
-            <div className="mockup-content">
-              <div className="mockup-card">
-                <h4>📊 Current GPA</h4>
-                <div className="gpa-display">3.72</div>
-              </div>
-              <div className="mockup-card">
-                <h4>📅 Upcoming</h4>
-                <div className="upcoming-item">Math Quiz - Tomorrow</div>
-                <div className="upcoming-item">Physics Lab - Friday</div>
-              </div>
-              <div className="mockup-card">
-                <h4>🎯 Goals</h4>
-                <div className="goal-item">Target GPA: 3.8</div>
-                <div className="progress-bar">
-                  <div className="progress-fill"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Box 
+        className="hero"
+        sx={{
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
+          position: 'relative',
+          overflow: 'hidden'
+        }}
+      >
+        <Container maxWidth="md" sx={{ textAlign: 'center', pt: 12, pb: 8 }}>
+          <Fade in={mounted} timeout={1000}>
+            <Box>
+              {/* Badge */}
+              <Box
+                sx={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  background: 'linear-gradient(135deg, #ede9fe, #f3f4f6)',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '50px',
+                  px: 3,
+                  py: 1,
+                  mb: 4,
+                  fontSize: '0.875rem',
+                  fontWeight: 500,
+                  color: '#6366f1'
+                }}
+              >
+                ✨ Introducing NU Academic Planner
+              </Box>
 
-      {/* Features Section */}
-      <section className="features-section">
-        <div className="features-content">
-          <h2 className="section-title">Powerful Features for Smart Students</h2>
-          <div className="features-grid">
-            <div className="feature-card">
-              <div className="feature-icon">🔍</div>
-              <h3 className="feature-title">AI Syllabus Parsing</h3>
-              <p className="feature-description">
-                Upload your syllabi and let our AI extract deadlines, grading weights, 
-                and exam dates automatically. No more manual tracking!
-              </p>
-            </div>
+              {/* Main Headline */}
+              <Typography
+                variant="h1"
+                sx={{
+                  fontSize: { xs: '2.5rem', md: '3.5rem', lg: '4rem' },
+                  fontWeight: 800,
+                  color: '#1f2937',
+                  mb: 3,
+                  lineHeight: 1.1,
+                  letterSpacing: '-0.025em'
+                }}
+              >
+                Academic Excellence
+                <br />
+                <Box 
+                  component="span"
+                  sx={{
+                    background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                  }}
+                >
+                  Made Simple
+                </Box>
+              </Typography>
 
-            <div className="feature-card">
-              <div className="feature-icon">📊</div>
-              <h3 className="feature-title">Interactive GPA Calculator</h3>
-              <p className="feature-description">
-                Track your performance with dynamic GPA calculations and get personalized 
-                recommendations to reach your academic goals.
-              </p>
-            </div>
+              {/* Subtitle */}
+              <Typography
+                variant="h5"
+                sx={{
+                  color: '#6b7280',
+                  mb: 6,
+                  fontWeight: 400,
+                  lineHeight: 1.6,
+                  fontSize: { xs: '1.125rem', md: '1.25rem' },
+                  maxWidth: '600px',
+                  mx: 'auto'
+                }}
+              >
+                The smartest way for NU students to plan, track, and achieve 
+                their academic goals with AI-powered insights.
+              </Typography>
 
-            <div className="feature-card">
-              <div className="feature-icon">📅</div>
-              <h3 className="feature-title">Smart Calendar Integration</h3>
-              <p className="feature-description">
-                Sync with Gmail and Google Calendar. Never miss an assignment or exam 
-                with intelligent deadline management.
-              </p>
-            </div>
+              {/* CTA Buttons */}
+              <Stack
+                direction={{ xs: 'column', sm: 'row' }}
+                spacing={2}
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Button
+                  variant="contained"
+                  size="large"
+                  endIcon={<ArrowForward />}
+                  onClick={() => navigate('/register')}
+                  sx={{
+                    background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+                    borderRadius: '16px',
+                    px: 4,
+                    py: 1.8,
+                    fontSize: '1.1rem',
+                    fontWeight: 600,
+                    textTransform: 'none',
+                    minWidth: '200px',
+                    boxShadow: '0 8px 25px rgba(99, 102, 241, 0.3)',
+                    '&:hover': {
+                      boxShadow: '0 12px 35px rgba(99, 102, 241, 0.4)',
+                      transform: 'translateY(-2px)'
+                    }
+                  }}
+                >
+                  Start Free
+                </Button>
+                
+                <Button
+                  variant="text"
+                  size="large"
+                  onClick={() => navigate('/login')}
+                  sx={{
+                    color: '#6b7280',
+                    borderRadius: '16px',
+                    px: 4,
+                    py: 1.8,
+                    fontSize: '1.1rem',
+                    fontWeight: 600,
+                    textTransform: 'none',
+                    minWidth: '200px',
+                    '&:hover': {
+                      background: 'rgba(107, 114, 128, 0.08)',
+                      color: '#374151'
+                    }
+                  }}
+                >
+                  Sign In
+                </Button>
+              </Stack>
 
-            <div className="feature-card">
-              <div className="feature-icon">🎯</div>
-              <h3 className="feature-title">Grade Optimization</h3>
-              <p className="feature-description">
-                Get AI-powered suggestions on what grades you need to achieve your 
-                target GPA and academic objectives.
-              </p>
-            </div>
+              {/* Trust Indicators */}
+              <Box
+                sx={{
+                  mt: 8,
+                  pt: 6,
+                  borderTop: '1px solid #e5e7eb'
+                }}
+              >
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: '#9ca3af',
+                    mb: 3,
+                    fontWeight: 500,
+                    fontSize: '0.875rem'
+                  }}
+                >
+                  Trusted by students across Kazakhstan
+                </Typography>
+                
+                <Stack
+                  direction="row"
+                  spacing={4}
+                  justifyContent="center"
+                  alignItems="center"
+                  flexWrap="wrap"
+                  gap={2}
+                >
+                  <Box textAlign="center">
+                    <Typography variant="h6" fontWeight={700} color="#1f2937">
+                      1000+
+                    </Typography>
+                    <Typography variant="body2" color="#6b7280">
+                      Active Users
+                    </Typography>
+                  </Box>
+                  <Box textAlign="center">
+                    <Typography variant="h6" fontWeight={700} color="#1f2937">
+                      4.9/5
+                    </Typography>
+                    <Typography variant="body2" color="#6b7280">
+                      User Rating
+                    </Typography>
+                  </Box>
+                  <Box textAlign="center">
+                    <Typography variant="h6" fontWeight={700} color="#1f2937">
+                      95%
+                    </Typography>
+                    <Typography variant="body2" color="#6b7280">
+                      Success Rate
+                    </Typography>
+                  </Box>
+                </Stack>
+              </Box>
+            </Box>
+          </Fade>
+        </Container>
+      </Box>
 
-            <div className="feature-card">
-              <div className="feature-icon">📚</div>
-              <h3 className="feature-title">Course Planning</h3>
-              <p className="feature-description">
-                Intelligent course recommendations based on your major, interests, 
-                and peer pathways. Plan your academic journey smartly.
-              </p>
-            </div>
-
-            <div className="feature-card">
-              <div className="feature-icon">⚡</div>
-              <h3 className="feature-title">Productivity Analytics</h3>
-              <p className="feature-description">
-                Discover patterns in your study habits and get insights to optimize 
-                your learning efficiency and time management.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="stats-section">
-        <div className="stats-content">
-          <h2 className="stats-title">Trusted by Students Nationwide</h2>
-          <div className="stats-grid">
-            <div className="stat-item">
-              <div className="stat-number">10,000+</div>
-              <div className="stat-label">Active Students</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-number">95%</div>
-              <div className="stat-label">Improved GPA</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-number">500+</div>
-              <div className="stat-label">Universities</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-number">99.9%</div>
-              <div className="stat-label">Uptime</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="final-cta-section">
-        <div className="cta-content">
-          <h2 className="cta-title">Ready to Transform Your Academic Journey?</h2>
-          <p className="cta-subtitle">
-            Join thousands of students who are already using AI to excel in their studies.
-          </p>
-          <button 
-            className="cta-button cta-primary large"
-            onClick={() => navigate('/register')}
+      {/* Final CTA */}
+      <Box
+        sx={{
+          py: 12,
+          background: 'linear-gradient(135deg, #1f2937 0%, #374151 100%)',
+          textAlign: 'center'
+        }}
+      >
+        <Container maxWidth="sm">
+          <Typography
+            variant="h3"
+            sx={{
+              fontSize: { xs: '1.875rem', md: '2.25rem' },
+              fontWeight: 800,
+              color: 'white',
+              mb: 3
+            }}
           >
-            <span className="button-icon">✨</span>
-            Get Started for Free
-          </button>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="home-footer">
-        <div className="footer-content">
-          <div className="footer-left">
-            <div className="footer-logo">
-              <span className="logo-icon">🧠</span>
-              <span className="logo-text">Smart Academic Planner</span>
-            </div>
-            <p className="footer-description">
-              Empowering students with AI-driven academic insights and planning tools.
-            </p>
-          </div>
-          <div className="footer-links">
-            <div className="link-group">
-              <h4>Product</h4>
-              <a href="#features">Features</a>
-              <a href="#pricing">Pricing</a>
-              <a href="#demo">Demo</a>
-            </div>
-            <div className="link-group">
-              <h4>Company</h4>
-              <a href="#about">About</a>
-              <a href="#careers">Careers</a>
-              <a href="#contact">Contact</a>
-            </div>
-            <div className="link-group">
-              <h4>Support</h4>
-              <a href="#help">Help Center</a>
-              <a href="#privacy">Privacy</a>
-              <a href="#terms">Terms</a>
-            </div>
-          </div>
-        </div>
-        <div className="footer-bottom">
-          <p>&copy; 2025 Smart Academic Planner. All rights reserved.</p>
-        </div>
-      </footer>
-    </div>
+            Ready to Get Started?
+          </Typography>
+          <Typography
+            variant="h6"
+            sx={{
+              color: 'rgba(255, 255, 255, 0.8)',
+              mb: 6,
+              fontWeight: 400
+            }}
+          >
+            Join thousands of NU students already using our platform.
+          </Typography>
+          
+          <Button
+            variant="contained"
+            size="large"
+            endIcon={<ArrowForward />}
+            onClick={() => navigate('/register')}
+            sx={{
+              background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+              borderRadius: '16px',
+              px: 6,
+              py: 2,
+              fontSize: '1.2rem',
+              fontWeight: 600,
+              textTransform: 'none',
+              boxShadow: '0 8px 30px rgba(99, 102, 241, 0.3)',
+              '&:hover': {
+                boxShadow: '0 12px 40px rgba(99, 102, 241, 0.4)',
+                transform: 'translateY(-2px)'
+              }
+            }}
+          >
+            Get Started Free
+          </Button>
+        </Container>
+      </Box>
+    </Box>
   );
 };
 
